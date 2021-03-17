@@ -1,8 +1,8 @@
-const { makeExecutableSchema } = require('apollo-server-express')
-const typeDefs = require('../typeDefs')
-const resolvers = require('../resolvers')
-const mongoose = require('./connection')
+import { makeExecutableSchema } from 'apollo-server-express'
+import typeDefs from '../typeDefs'
+import resolvers from '../resolvers'
 
-const schema = makeExecutableSchema({ typeDefs, resolvers })
+const db = require('./connection')
 
-module.exports = { schema, mongoose }
+export const schema = makeExecutableSchema({ typeDefs, resolvers })
+export const mongoose = db

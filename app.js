@@ -1,6 +1,6 @@
-const express = require('express');
-const { ApolloServer } = require('apollo-server-express');
-const { schema } = require('./server/config/apolloSchema');
+import express from 'express'
+import { ApolloServer } from 'apollo-server-express'
+import { schema } from './server/config/apolloSchema'
 
 require('dotenv').config()
 

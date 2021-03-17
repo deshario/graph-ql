@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 
 require('dotenv').config()
 
@@ -19,4 +19,4 @@ mongoose.connect(process.env.DB_HOST,{
   useNewUrlParser: true
 });
 
-module.exports = mongoose;
+export default mongoose;

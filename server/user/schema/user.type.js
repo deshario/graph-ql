@@ -1,4 +1,4 @@
-const { gql } = require('apollo-server-express')
+import { gql } from 'apollo-server-express';
 
 const userType = gql`
 	scalar ObjectID
@@ -11,4 +11,4 @@ const userType = gql`
 
 `;
 
-module.exports = userType
+export { userType }

@@ -1,4 +1,4 @@
-const userController = require('./db/user.controller')
+import { userController } from './db/user.controller'
 
 const userResolver = {
 	Query: {
@@ -16,4 +16,4 @@ const userResolver = {
 	}
 }
 
-module.exports = userResolver
+export { userResolver }

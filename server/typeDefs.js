@@ -1,8 +1,8 @@
-const merge = require("lodash/merge");
-const { userType, userQuery, userMutation } = require("./user/schema");
+import merge  from "lodash/merge";
+import { userType, userQuery, userMutation }  from "./user/schema";
 
 const typeDefs = merge([
   userType, userQuery, userMutation
 ]);
 
-module.exports = typeDefs
+export default typeDefs;

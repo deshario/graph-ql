@@ -1,9 +1,3 @@
-const userType = require("./user.type");
-const userQuery = require("./user.query");
-const userMutation = require("./user.mutation");
-
-module.exports = {
-  userType,
-  userQuery,
-  userMutation
-}
+export { userType } from "./user.type";
+export { userQuery } from "./user.query";
+export { userMutation } from "./user.mutation";

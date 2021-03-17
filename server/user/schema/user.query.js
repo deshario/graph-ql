@@ -1,4 +1,4 @@
-const { gql } = require('apollo-server-express')
+import { gql } from 'apollo-server-express';
 
 const userQuery = gql`
 	scalar JSON
@@ -8,4 +8,4 @@ const userQuery = gql`
 		getUserById(_id: String!): User
 	}
 `
-module.exports = userQuery
+export { userQuery }
