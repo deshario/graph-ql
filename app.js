@@ -1,6 +1,6 @@
 import express from 'express'
 import { ApolloServer } from 'apollo-server-express'
-import { schema } from './server/config/apolloSchema'
+import { schema } from './server/config/apollo'
 
 require('dotenv').config()
 
