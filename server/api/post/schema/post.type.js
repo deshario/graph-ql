@@ -8,6 +8,18 @@ const postType = gql`
 		creator: User!
 	}
 
+	type Pagination {
+		currentPage: Int,
+		totalPages: Int,
+		itemsPerPage: Int,
+		totalItems: Int,
+	}
+
+	type PaginatedPost {
+		pagination: Pagination
+		posts: [Post],
+	}
+
 `;
 
 export { postType }
