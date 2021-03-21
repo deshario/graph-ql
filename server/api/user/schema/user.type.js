@@ -5,7 +5,7 @@ const userType = gql`
 	
 	type User {
 		_id: ObjectID!
-		username: String
+		username: String!
 		email: String!
 	}
 

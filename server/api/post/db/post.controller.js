@@ -2,8 +2,8 @@ import Post from './post.model'
 
 const postController = {
   getPosts: async() => {
-    const posts = await Post.find();
-    return posts;
+    const posts = await Post.find().populate("creator");
+    return posts; 
   },
   createPost: async (args, context = {}) => {
     const { title, desc, creator } = args

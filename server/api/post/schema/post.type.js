@@ -5,7 +5,7 @@ const postType = gql`
 		_id: ObjectID!
 		title: String!
 		desc: String!
-		creator: User
+		creator: User!
 	}
 
 `;
