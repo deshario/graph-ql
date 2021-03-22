@@ -4,7 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "NODE_ENV=development nodemon --exec babel-node app.js"
+    "dev": "NODE_ENV=development nodemon app.js --exec babel-node --presets @babel/preset-env",
+    "dev:window": "nodemon app.js --exec babel-node --presets @babel/preset-env --watch app.js",
+    "build": "next build client",
+    "start": "next start",
+    "prod": "NODE_ENV=production babel-node app.js --presets @babel/preset-env"
   },
   "keywords": [],
   "author": "",
@@ -16,7 +20,10 @@
     "graphql": "^15.5.0",
     "lodash": "^4.17.21",
     "mongoose": "^5.12.0",
-    "nodemon": "^2.0.7"
+    "next": "^10.0.9",
+    "nodemon": "^2.0.7",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.13.10",
