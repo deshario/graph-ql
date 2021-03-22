@@ -13,6 +13,12 @@ const postResolver = {
 		createPost(parent, args, context) {
       return postController.createPost(args, context)
 		},
+		updatePost(parent, args, context){
+			return postController.updatePost(args,context);
+		},
+		deletePost(parent, args, context){
+			return postController.deletePost(args,context)
+		}
 	},
 }
 

@@ -16,7 +16,8 @@ mongoose.connection.on('error', (error) => console.log('> DB ERROR: ' + error))
 
 mongoose.connect(process.env.DB_HOST,{
   useUnifiedTopology: true,
-  useNewUrlParser: true
+  useNewUrlParser: true,
+  useFindAndModify: false
 });
 
 export default mongoose;

@@ -32,6 +32,15 @@ const postController = {
     const post = await newPost.save()
     return post
   },
+  updatePost: async(args, context={}) => {
+    const updateObj = JSON.parse(JSON.stringify(args));
+    delete updateObj._id
+    const updatedPost = await Post.findByIdAndUpdate({ _id:args._id }, updateObj, {new: true});
+    return updatedPost;
+  },
+  deletePost: async(args, context={}) => {
+   return await Post.findOneAndDelete({_id: args._id});
+  }
 }
 
 export { postController }
