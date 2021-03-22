@@ -13,11 +13,9 @@ const handle = nextApp.getRequestHandler();
 (async () => {
   await nextApp.prepare();
   const app = express();
+  const isDevEnv = process.env.NODE_ENV == 'development';
+  const server = new ApolloServer({ schema, playground: isDevEnv });
   const port = process.env.PORT || 9000;
-  const server = new ApolloServer({
-    schema,
-    playground: process.env.NODE_ENV == 'development'
-  });
   server.applyMiddleware({ app, path:'/playground' });
   app.use(express.urlencoded({ extended: true }));
   app.use(express.static(__dirname));
