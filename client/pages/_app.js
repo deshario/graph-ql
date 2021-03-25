@@ -1,7 +1,9 @@
 import App from 'next/app'
 import Head from 'next/head'
+import { ApolloProvider } from '@apollo/client';
+import client from '../lib/apollo';
 
-const mApp = ({ Component, pageProps }) => {
+const mApp = ({ Component, pageProps}) => {
   return (
     <>
       <Head>
@@ -9,7 +11,9 @@ const mApp = ({ Component, pageProps }) => {
         <meta name="viewport" content="viewport-fit=cover" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
-      <Component {...pageProps} />
+      <ApolloProvider client={client}>
+        <Component {...pageProps} />
+      </ApolloProvider>
     </>
   )
 }
