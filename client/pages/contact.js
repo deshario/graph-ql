@@ -1,11 +1,11 @@
 import Layout from './components/Layout';
 
-const Index = () => {
-  return (
+const Contact = () => {
+  return(
     <Layout>
-      Index
+      Contact
     </Layout>
   )
 }
 
-export default Index
+export default Contact
