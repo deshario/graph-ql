@@ -46,6 +46,7 @@ const Index = () => {
 
   return (
     <Layout>
+      <Info>Click here to create new post</Info>
       <CardContainer>
         <QueryPost/>
       </CardContainer>
@@ -53,12 +54,23 @@ const Index = () => {
   )
 }
 
-const CardContainer = styled.div`
+const Info = styled.div`
+  background:#42A5F5;
   display:flex;
-  padding:10px;
+  padding:10px 10px 10px 20px;
+  margin:10px 20px 0px 20px;
+  border-radius:5px;
+  color:white;
+`
 
-  @media (max-width: 920px){
-    flex-direction:column;
+const CardContainer = styled.div`
+  display:grid;
+  grid-template-columns: repeat(4, 1fr);
+  padding:10px 20px;
+  gap:10px;
+
+  @media only screen and (max-width: 920px) {
+    grid-template-columns: repeat(3, 1fr);
   }
 `
 
@@ -67,11 +79,8 @@ const Card = styled.div`
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
   transition: 0.3s;
   border-radius: 5px;
-  margin:10px;
-  min-width:300px;
   display:flex;
   flex-direction:column;
-  max-width:300px;
   transition: all .2s ease-in-out;
   cursor:pointer;
 
@@ -130,6 +139,7 @@ const CardActionBtn = styled.span`
   cursor:pointer;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
   transition: all .2s ease-in-out; 
+  text-align: center;
 
   &:hover{
     color: #607D8B;

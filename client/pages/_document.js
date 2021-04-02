@@ -39,6 +39,7 @@ class MyDocument extends Document {
               `
             }
           </style>
+          <link rel="stylesheet" href="./assets/bootGrid.css" />
         </Head>
         <Main />
         <NextScript />

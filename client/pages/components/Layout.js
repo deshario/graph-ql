@@ -5,7 +5,7 @@ const Layout = props => {
   return (
     <>
       <Navbar/>
-      <Content>
+      <Content className="container">
         {props.children}
       </Content>
     </>
@@ -13,10 +13,10 @@ const Layout = props => {
 }
 
 const Content = styled.div`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  text-align: center;
   z-index: -1;
+  
+  @media (max-width: 920px){
+    position: absolute;
+  }
 `
 export default Layout
