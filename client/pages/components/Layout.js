@@ -16,6 +16,7 @@ const Layout = props => {
 
 const Root = styled.div`
   background:rgb(241,241,241);
+  min-height:100vh;
   height:100%;
 `
 const Content = styled.div`

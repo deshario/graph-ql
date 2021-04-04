@@ -10,11 +10,11 @@ const Post = ({ payload }) => {
     <Card>
       <CardContent>
         <AuthorRoot>
-            <AuthorIcon src="/assets/images/avatar.png" width="50" height="50"/>
-            <Flexbox direction="column" marginLeft="10px">
-              <AuthorTitle>{payload.creator.username}</AuthorTitle>
-              <AuthorDesc>{moment(payload.createdAt).fromNow()}</AuthorDesc>
-            </Flexbox>
+          <AuthorIcon src="/assets/images/avatar.png" width="50" height="50"/>
+          <Flexbox direction="column" marginLeft="10px">
+            <AuthorTitle>{payload.creator.username}</AuthorTitle>
+            <AuthorDesc>{moment(payload.createdAt).fromNow()}</AuthorDesc>
+          </Flexbox>
         </AuthorRoot>
         <CardDesc>{payload.content}</CardDesc>
         {/* <CardImage src={getRandomPic()} width={200} height={200} /> */}

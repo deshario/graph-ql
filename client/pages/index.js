@@ -3,13 +3,13 @@ import styled from "styled-components";
 import React, { useState } from 'react';
 import { FaCamera, FaFileAlt, FaMicrophone } from 'react-icons/fa';
 import { useQuery } from '@apollo/client';
-
 import { postsQuery } from '../documents'
 import Post from './components/Post';
 
 const Index = () => {
 
   const [newPost, setNewPost] = useState('')
+  const renders = React.useRef(0);
 
   const createPost = () => {
     console.log('creating Post : ',newPost);
@@ -21,7 +21,12 @@ const Index = () => {
     if (loading) return <h1>Loading</h1>
     if (error) <h1>Error</h1>
     if(data && data.getPosts){
-      return data.getPosts.map((post,postIndex) => <Post key={postIndex} payload={post} />)
+      return <>
+        <h1>Renders : {renders.current++}</h1>
+        {
+          data.getPosts.map((post,postIndex) => <Post key={postIndex} payload={post} renders={renders}/>)
+        }
+      </>
     }
   });
 
