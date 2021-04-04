@@ -3,9 +3,9 @@ import { useState } from 'react'
 import { FaBars } from 'react-icons/fa';
 import Router, { withRouter } from 'next/router'
 
-const Navbar = ({ router }) => {
+const Navbar = ({ router, isMobNavOpen, setMobNavOpen }) => {
 
-  const [isMobNavOpen, setMobNavOpen] = useState(false);
+  // const [isMobNavOpen, setMobNavOpen] = useState(false);
 
   const checkActive = currentTab => router.pathname == currentTab ? 'active' : '';
 

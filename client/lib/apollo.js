@@ -16,7 +16,7 @@ const defaultOptions = {
 };
 
 const cache = new InMemoryCache({
-	resultCaching: false,
+	resultCaching: true,
 });
 
 const link = createHttpLink({
@@ -26,9 +26,10 @@ const link = createHttpLink({
 
 const client = new ApolloClient({
 	connectToDevTools: false,
+	ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
 	link,
 	cache,
-	defaultOptions
+	//defaultOptions
 });
 
 export default client;

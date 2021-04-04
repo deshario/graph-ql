@@ -1,151 +1,101 @@
 import Layout from './components/Layout';
 import styled from "styled-components";
-import Image from 'next/image'
-import { FaPencilAlt, FaTrashAlt } from 'react-icons/fa';
+import React, { useState } from 'react';
+import { FaCamera, FaFileAlt, FaMicrophone } from 'react-icons/fa';
 import { useQuery } from '@apollo/client';
 
 import { postsQuery } from '../documents'
+import Post from './components/Post';
 
 const Index = () => {
 
-  const getRandomPic = () => {
-    const posts = [
-      {name: 'post 1', cover:'https://q-xx.bstatic.com/images/hotel/max1024x768/116/116281465.jpg'},
-      {name: 'post 2', cover:'https://cf.bstatic.com/images/hotel/max1024x768/116/116281457.jpg'}
-    ];
-    return posts[Math.floor(Math.random()*posts.length)].cover;
+  const [newPost, setNewPost] = useState('')
+
+  const createPost = () => {
+    console.log('creating Post : ',newPost);
   }
 
-  const QueryPost = () => {
+  const QueryPost = React.memo(() => {
+    console.log(' > QueryPost');
     const { loading, error, data } = useQuery(postsQuery);
     if (loading) return <h1>Loading</h1>
     if (error) <h1>Error</h1>
     if(data && data.getPosts){
-      const dataOk = data.getPosts;
-      return dataOk.map((e,i) => {
-        return (
-          <Card key={i}>
-            <CardImage src={getRandomPic()} width={200} height={200} />
-            <CardContent>
-              <CardTitle>{e.title}</CardTitle>
-              <CardDesc>{e.desc}</CardDesc>
-            </CardContent>
-            <CardAction>
-              <CardActionBtn>
-                <FaPencilAlt/>
-              </CardActionBtn>
-              <CardActionBtn>
-                <FaTrashAlt/>
-              </CardActionBtn>
-            </CardAction>
-          </Card>
-        );
-      })
+      return data.getPosts.map((post,postIndex) => <Post key={postIndex} title={post.title} desc={post.desc} />)
     }
-  }
+  },(prevProps, nextProps) => {
+    return prevProps === nextProps;
+  });
 
   return (
     <Layout>
-      <Info>Click here to create new post</Info>
-      <CardContainer>
-        <QueryPost/>
-      </CardContainer>
+      <Row className="row">
+        <FeedContainer className="col-md-8">
+          <FeedCreator>
+            <TextArea rows="4" placeholder="What's on your mind?" onChange={(e) => setNewPost(e.target.value)}></TextArea>
+            <Flexbox justifyContent="space-between" algItems="center">
+              <Flexbox marginTop="20px">
+                <FeedActionBtn><FaCamera/></FeedActionBtn>
+                <FeedActionBtn><FaFileAlt/></FeedActionBtn>
+                <FeedActionBtn><FaMicrophone/></FeedActionBtn>
+              </Flexbox>
+              <FeedButton onClick={createPost}>POST</FeedButton>
+            </Flexbox>
+          </FeedCreator>
+
+          <QueryPost/>
+
+        </FeedContainer>
+        <div className="col-md-4" style={{background:'gray'}}>Right</div>
+      </Row>
     </Layout>
   )
 }
 
-const Info = styled.div`
-  background:#42A5F5;
+
+const FeedContainer = styled.div``
+
+const FeedCreator = styled.div`
   display:flex;
-  padding:10px 10px 10px 20px;
-  margin:10px 20px 0px 20px;
-  border-radius:5px;
-  color:white;
-`
-
-const CardContainer = styled.div`
-  display:grid;
-  grid-template-columns: repeat(4, 1fr);
-  padding:10px 20px;
-  gap:10px;
-
-  @media only screen and (max-width: 920px) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-`
-
-const Card = styled.div`
-  position:relative;
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-  transition: 0.3s;
-  border-radius: 5px;
-  display:flex;
+  background:white;
   flex-direction:column;
-  transition: all .2s ease-in-out;
-  cursor:pointer;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  margin-bottom:10px;
+  padding:10px 10px 0px 10px;
+`
 
-  &:hover{
-    box-shadow: 0 5px 15px rgba(145, 92, 182, .4);
-    transform: scale(1.01);
-  }
-
-  @media (max-width: 920px){
-    max-width:unset;
-  }
-`;
-
-const CardImage = styled(Image)`
-  border-top-left-radius:5px;
-  border-top-right-radius:5px;
-`;
-
-const CardContent = styled.div`
+const TextArea = styled.textarea`
+  resize:none;
   padding:10px;
-  display:flex;
-  flex-direction:column;
-`;
+  border:none;
 
-const CardTitle = styled.span`
-  font-weight:bold;
-  font-size:1.5em;
-  text-transform: capitalize;
-`
-
-const CardDesc = styled.span`
-  color:gray;
-  font-size:0.9em;
-  text-align: justify;
-  margin-top:7px;
-  line-height:1.6em;
-`
-const CardAction = styled.div`
-  color:#607D8B;
-  padding-top:7px;
-  padding-right:7px;
-  display: flex;
-  justify-content:space-around;
-  position:absolute;
-  right:0;
-`;
-
-const CardActionBtn = styled.span`
-  height: 25px;
-  width: 25px;
-  padding-top:2px;
-  margin-left:5px;
-  background-color: white;
-  color: #9E9E9E;
-  border-radius: 50%;
-  cursor:pointer;
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-  transition: all .2s ease-in-out; 
-  text-align: center;
-
-  &:hover{
-    color: #607D8B;
-    box-shadow: 0 5px 15px rgba(145, 92, 182, .4);
-    transform: scale(1.1);
+  :focus{
+    border:none;
+    outline: 0;
   }
 `
 
-export default Index
+const Flexbox = styled.div`
+  display:flex;
+  flex-direction: ${props => props.direction == 'column' ? 'column' : 'row'};
+  justify-content: ${props => props.justifyContent};
+  margin-top: ${props => props.marginTop};
+  margin-left: ${props => props.marginLeft};
+  align-items: ${props => props.algItems};
+`
+
+const FeedActionBtn = styled.div`
+  padding:10px;
+`;
+
+const Row = styled.div`
+  margin-top:10px;
+`
+
+const FeedButton = styled.button`
+  color:white;
+  background: rgb(27,27,27);
+  padding:5px 10px;
+  border: none;
+`
+export default React.memo(Index)
