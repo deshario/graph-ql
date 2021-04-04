@@ -6,7 +6,7 @@ const calculateTotalPages = (count, size) => Math.ceil(count / size);
 
 const postController = {
   getPosts: async(args, context = {}) => {
-    return await Post.find(args.where).sort(args.sort || '_id').skip(args.skip || 0).limit(args.limit || false).populate("creator");
+    return await Post.find(args.where).sort(args.sort || {createdAt: -1}).skip(args.skip || 0).limit(args.limit || false).populate("creator");
   },
   getPaginatedPosts: async(args, context = {}) => {
     const { page, size } = args
@@ -27,8 +27,8 @@ const postController = {
     }
   },
   createPost: async (args, context = {}) => {
-    const { title, desc, creator } = args
-    const newPost = new Post({ title, desc, creator })
+    const { content, creator } = args
+    const newPost = new Post({ content, creator })
     const post = await newPost.save()
     return post
   },

@@ -2,20 +2,21 @@ import React from 'react'
 import styled from "styled-components";
 import Image from 'next/image';
 import { FaCog } from 'react-icons/fa';
+import moment from 'moment';
 
-const Post = ({title, desc}) => {
-  console.log(' > Post Rendered ')
+const Post = ({ payload }) => {
+  console.log(' > Post Rendered ',payload)
   return (
     <Card>
       <CardContent>
         <AuthorRoot>
             <AuthorIcon src="/assets/images/avatar.png" width="50" height="50"/>
             <Flexbox direction="column" marginLeft="10px">
-              <AuthorTitle>{title}</AuthorTitle>
-              <AuthorDesc>3 days ago</AuthorDesc>
+              <AuthorTitle>{payload.creator.username}</AuthorTitle>
+              <AuthorDesc>{moment(payload.createdAt).fromNow()}</AuthorDesc>
             </Flexbox>
         </AuthorRoot>
-        <CardDesc>{desc}</CardDesc>
+        <CardDesc>{payload.content}</CardDesc>
         {/* <CardImage src={getRandomPic()} width={200} height={200} /> */}
       </CardContent>
       <CardActions>
@@ -39,17 +40,15 @@ const Flexbox = styled.div`
 `
 
 const Card = styled.div`
-  position:relative;
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-  transition: 0.3s;
   display:flex;
   flex-direction:column;
-  transition: all .2s ease-in-out;
+  position:relative;
+  background:white;
   cursor:pointer;
-
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: all .2s ease-in-out;
   padding:5px 10px 10px 10px;
   border-radius: 2px;
-  background:white;
   margin-bottom:10px;
 
   @media (max-width: 920px){

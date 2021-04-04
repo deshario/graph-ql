@@ -21,10 +21,8 @@ const Index = () => {
     if (loading) return <h1>Loading</h1>
     if (error) <h1>Error</h1>
     if(data && data.getPosts){
-      return data.getPosts.map((post,postIndex) => <Post key={postIndex} title={post.title} desc={post.desc} />)
+      return data.getPosts.map((post,postIndex) => <Post key={postIndex} payload={post} />)
     }
-  },(prevProps, nextProps) => {
-    return prevProps === nextProps;
   });
 
   return (
@@ -42,11 +40,13 @@ const Index = () => {
               <FeedButton onClick={createPost}>POST</FeedButton>
             </Flexbox>
           </FeedCreator>
-
           <QueryPost/>
-
         </FeedContainer>
-        <div className="col-md-4" style={{background:'gray'}}>Right</div>
+        <SuggestionContainer className="col-md-4">
+          <h3>Suggestions</h3>
+          <People><span>Professor</span></People>
+          <People><span>Berlin</span></People>
+        </SuggestionContainer>
       </Row>
     </Layout>
   )
@@ -98,4 +98,25 @@ const FeedButton = styled.button`
   padding:5px 10px;
   border: none;
 `
+
+const SuggestionContainer = styled.div`
+  display:flex;
+  flex-direction:column;
+  position:relative;
+  background:white;
+  padding:20px;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  cursor:pointer;
+  border-radius: 2px;
+  margin-bottom:10px;
+
+  @media (max-width: 920px){
+    max-width:unset;
+  }
+`;
+
+const People = styled.div`
+  margin-top:20px;
+`;
+
 export default React.memo(Index)

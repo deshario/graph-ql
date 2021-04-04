@@ -3,11 +3,14 @@ import { gql } from "@apollo/client"
 const fragmentPost = gql`
   fragment Post on Post {
     _id
-    title
-    desc
+    content
+    image
     creator{
+      username
       email
     }
+    createdAt
+    updatedAt
   }
 `;
 

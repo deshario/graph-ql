@@ -1,11 +1,15 @@
 import { gql } from 'apollo-server-express';
 
 const postType = gql`
+	scalar Date
+
 	type Post {
 		_id: ObjectID!
-		title: String!
-		desc: String!
+		content: String!
+		image: String
 		creator: User!
+		createdAt: Date
+		updatedAt: Date
 	}
 
 	type Pagination {

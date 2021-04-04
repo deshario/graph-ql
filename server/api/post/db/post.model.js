@@ -3,8 +3,8 @@ import mongoose from 'mongoose';
 const { Schema, ObjectId } = mongoose
 
 const PostSchema = new Schema({
-  title: { type: String},
-  desc: { type: String},
+  content: { type: String },
+  image : { type: String },
   creator: { type: ObjectId, ref: 'User' },
 },
 {
