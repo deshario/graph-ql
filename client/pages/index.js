@@ -23,9 +23,7 @@ const Index = () => {
     if(data && data.getPosts){
       return <>
         <h1>Renders : {renders.current++}</h1>
-        {
-          data.getPosts.map((post,postIndex) => <Post key={postIndex} payload={post} renders={renders}/>)
-        }
+        { data.getPosts.map((post,postIndex) => <Post key={postIndex} payload={post}/>) }
       </>
     }
   });
