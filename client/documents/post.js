@@ -22,3 +22,12 @@ export const postsQuery = gql`
   }
   ${fragmentPost}
 `;
+
+export const postMutation = gql`
+  mutation createPost($content: String!, $image:String, $creator:String!){
+    createPost(content: $content, image:$image, creator:$creator){
+      ...Post
+    }
+  }
+  ${fragmentPost}
+`;

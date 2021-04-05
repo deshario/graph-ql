@@ -29,8 +29,9 @@ const postController = {
   createPost: async (args, context = {}) => {
     const { content, creator } = args
     const newPost = new Post({ content, creator })
-    const post = await newPost.save()
-    return post
+    const post = await newPost.save();
+    const populatedPost = await post.populate('creator').execPopulate();
+    return populatedPost;
   },
   updatePost: async(args, context={}) => {
     const updateObj = JSON.parse(JSON.stringify(args));

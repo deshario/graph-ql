@@ -4,31 +4,40 @@ import Image from 'next/image';
 import { FaCog } from 'react-icons/fa';
 import moment from 'moment';
 
-const Post = ({ payload }) => {
-  console.log(' > Post Rendered ',payload)
+const Posts = ({ payloads }) => {
+  const renders = React.useRef(0);
   return (
-    <Card>
-      <CardContent>
-        <AuthorRoot>
-          <AuthorIcon src="/assets/images/avatar.png" width="50" height="50"/>
-          <Flexbox direction="column" marginLeft="10px">
-            <AuthorTitle>{payload.creator.username}</AuthorTitle>
-            <AuthorDesc>{moment(payload.createdAt).fromNow()}</AuthorDesc>
-          </Flexbox>
-        </AuthorRoot>
-        <CardDesc>{payload.content}</CardDesc>
-        {/* <CardImage src={getRandomPic()} width={200} height={200} /> */}
-      </CardContent>
-      <CardActions>
-        <CardActionBtn>
-          <FaCog/>
-        </CardActionBtn>
-      </CardActions>
-    </Card>
+    <>
+      {/* <h1>Renders : {renders.current++}</h1> */}
+      {
+        payloads.map((post, postKey) => {
+          return (
+            <Card key={postKey}>
+              <CardContent>
+                <AuthorRoot>
+                  <AuthorIcon src="/assets/images/avatar.png" width="50" height="50"/>
+                  <Flexbox direction="column" marginLeft="10px">
+                    <AuthorTitle>{post.creator.username}</AuthorTitle>
+                    <AuthorDesc>{moment(post.createdAt).fromNow()}</AuthorDesc>
+                  </Flexbox>
+                </AuthorRoot>
+                <CardDesc>{post.content}</CardDesc>
+                {/* <CardImage src={getRandomPic()} width={200} height={200} /> */}
+              </CardContent>
+              <CardActions>
+                <CardActionBtn>
+                  <FaCog/>
+                </CardActionBtn>
+              </CardActions>
+            </Card>
+          )
+        })
+      }
+    </>
   )
 }
 
-export default React.memo(Post)
+export default React.memo(Posts)
 
 const Flexbox = styled.div`
   display:flex;
