@@ -4,7 +4,7 @@ const { Schema, ObjectId } = mongoose
 
 const PostSchema = new Schema({
   content: { type: String },
-  image : { type: String },
+  attachment : { type: String },
   creator: { type: ObjectId, ref: 'User' },
 },
 {

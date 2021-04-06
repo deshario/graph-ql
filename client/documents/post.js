@@ -4,7 +4,7 @@ const fragmentPost = gql`
   fragment Post on Post {
     _id
     content
-    image
+    attachment
     creator{
       username
       email
@@ -24,8 +24,8 @@ export const postsQuery = gql`
 `;
 
 export const postMutation = gql`
-  mutation createPost($content: String!, $image:String, $creator:String!){
-    createPost(content: $content, image:$image, creator:$creator){
+  mutation createPost($content: String!, $attachment:String, $creator:String!){
+    createPost(content: $content, attachment:$attachment, creator:$creator){
       ...Post
     }
   }

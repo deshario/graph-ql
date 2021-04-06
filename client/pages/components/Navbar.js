@@ -99,7 +99,14 @@ const MenuLink = styled.a`
   letter-spacing: 1px;
   transition: all 0.3s ease;
 
-  //&.active, &:hover {
+  &.active, &:hover {
+    text-decoration:none;
+  }
+
+  &:hover{
+    color:#9E9E9E;
+  }
+  
   &.active{
     color: #111;
     background: #fff;

@@ -6,7 +6,7 @@ const postType = gql`
 	type Post {
 		_id: ObjectID!
 		content: String!
-		image: String
+		attachment: String
 		creator: User!
 		createdAt: Date
 		updatedAt: Date
