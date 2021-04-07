@@ -2,7 +2,7 @@ import { gql } from 'apollo-server-express'
 
 const postMutation = gql`
   extend type Mutation {
-    createPost(content: String!, attachment:String, creator: String!): Post
+    createPost(content: String!, attachment:Upload, creator: String!): Post
     updatePost(_id:String!, content:String): Post
     deletePost(_id:String!): Post
   }

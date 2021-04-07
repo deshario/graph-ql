@@ -1,8 +1,5 @@
-import {
-	ApolloClient,
-	InMemoryCache,
-	createHttpLink
-} from '@apollo/client';
+import { ApolloClient, InMemoryCache } from '@apollo/client';
+import { createUploadLink } from 'apollo-upload-client'
 
 const defaultOptions = {
 	watchQuery: {
@@ -19,8 +16,8 @@ const cache = new InMemoryCache({
 	resultCaching: true,
 });
 
-const link = createHttpLink({
-	uri: '/playground',
+const link = createUploadLink({
+  uri: '/playground',
   credentials: 'same-origin'
 })
 

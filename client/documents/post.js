@@ -24,7 +24,7 @@ export const postsQuery = gql`
 `;
 
 export const postMutation = gql`
-  mutation createPost($content: String!, $attachment:String, $creator:String!){
+  mutation createPost($content: String!, $attachment:Upload, $creator:String!){
     createPost(content: $content, attachment:$attachment, creator:$creator){
       ...Post
     }

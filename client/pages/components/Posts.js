@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from "styled-components";
 import Image from 'next/image';
-import { FaCog } from 'react-icons/fa';
+import { FaTrashAlt } from 'react-icons/fa';
 import moment from 'moment';
 
 const Posts = ({ payloads }) => {
@@ -26,7 +26,7 @@ const Posts = ({ payloads }) => {
               </CardContent>
               <CardActions>
                 <CardActionBtn>
-                  <FaCog/>
+                  <FaTrashAlt/>
                 </CardActionBtn>
               </CardActions>
             </Card>

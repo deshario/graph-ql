@@ -1,4 +1,5 @@
 import Post from './post.model'
+import uploadFile from '../../../config/file'
 
 const calculateSkip = (page, size) => (page - 1) * size;
 
@@ -26,9 +27,13 @@ const postController = {
       posts
     }
   },
-  createPost: async (args, context = {}) => {
-    const { content, creator } = args
-    const newPost = new Post({ content, creator })
+  createPost: async (args = {} , context = {}) => {
+    const { content, attachment, creator } = args
+    const newPost = new Post({ content, creator });
+    if(attachment){
+      const uploadedFile = await uploadFile({ attachment });
+      newPost.attachment = uploadedFile.fileName;
+    }
     const post = await newPost.save();
     const populatedPost = await post.populate('creator').execPopulate();
     return populatedPost;

@@ -9,7 +9,7 @@ import Spinner from "./components/Spinner"
 
 const Index = () => {
 
-  const defaultPost = { content: '', attachment: '' }
+  const defaultPost = { content: '', attachment: null }
   const [newPost, setNewPost] = useState(defaultPost);
   const [ posts, setPosts ] = useState([]);
 
@@ -30,7 +30,7 @@ const Index = () => {
     const fileUploaded = event.target.files[0];
     setNewPost({
       ...newPost,
-      attachment: fileUploaded.name
+      attachment: fileUploaded
     });
   };
 
@@ -74,7 +74,7 @@ const Index = () => {
                 <FeedActionBtn>
                   <FaMicrophone />
                 </FeedActionBtn>
-                <SelectedAttachment hide={newPost.attachment == ''}>{newPost.attachment}</SelectedAttachment>
+                <SelectedAttachment hide={newPost.attachment == null}>{newPost.attachment && newPost.attachment.name}</SelectedAttachment>
               </Flexbox>
               <FeedButton onClick={() => createPoster()} disabled={mutationLoading}>POST</FeedButton>
             </Flexbox>

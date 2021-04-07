@@ -2,6 +2,7 @@ import { gql } from 'apollo-server-express';
 
 const postType = gql`
 	scalar Date
+	scalar Upload
 
 	type Post {
 		_id: ObjectID!
