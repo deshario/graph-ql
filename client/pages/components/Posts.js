@@ -22,7 +22,16 @@ const Posts = ({ payloads }) => {
                   </Flexbox>
                 </AuthorRoot>
                 <CardDesc>{post.content}</CardDesc>
-                {/* <CardImage src={getRandomPic()} width={200} height={200} /> */}
+                <ImgHolder hide={post.attachment == null ? 'none' : ''}>
+                  <CardImage
+                    src={post.attachment != null ? `/uploads/posts/${post.attachment}` : '/vercel.svg'}
+                    layout="responsive"
+                    width={800}
+                    height={400}
+                    alt={post.content}
+                  />
+                  {/* <img src={post.attachment != null ? `/uploads/posts/${post.attachment}` : '/vercel.svg'} width={800} height={400} /> */}
+                </ImgHolder>
               </CardContent>
               <CardActions>
                 <CardActionBtn>
@@ -38,6 +47,7 @@ const Posts = ({ payloads }) => {
 }
 
 export default React.memo(Posts)
+
 
 const Flexbox = styled.div`
   display:flex;
@@ -66,6 +76,13 @@ const Card = styled.div`
 `;
 
 const CardImage = styled(Image)``;
+
+const ImgHolder = styled.div`
+  display: ${(props) => props.hide};
+  margin-left:-10px;
+  margin-right:-10px;
+  margin-bottom:-10px;
+`;
 
 const AuthorRoot = styled.div`
   display:flex;

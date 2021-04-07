@@ -59,7 +59,28 @@ const Index = () => {
   return (
     <Layout>
       <Row className="row">
-        <FeedContainer className="col-md-8">
+        <Flexbox className="col-md-3" direction="column" marginLeft="0px" marginRight="-10px" mLeft="10px" padding="0px" hideonMobile="none">
+          <CardBox>
+            <List>
+              <ListHeader>Shortcuts</ListHeader>
+              <ListItems>
+                <ListItem>List2</ListItem>
+                <ListItem>List3</ListItem>
+              </ListItems>
+            </List>
+          </CardBox>
+          <CardBox mTop="10px">
+            <List>
+              <ListHeader>Top Hit Series</ListHeader>
+              <ListItems>
+                <ListItem>Stranger Things</ListItem>
+                <ListItem>Walking Dead</ListItem>
+                <ListItem>Breaking Bad Dead</ListItem>
+              </ListItems>
+            </List>
+          </CardBox>
+        </Flexbox>
+        <FeedContainer className="col-md-5">
           <FeedCreator>
             <TextArea rows="4" placeholder="What's on your mind?" onChange={onContentChange} value={newPost.content}></TextArea>
             <Flexbox justifyContent="space-between" algItems="flex-start" bg="#607D8B"  marginLeft="-10px" marginRight="-10px">
@@ -85,19 +106,42 @@ const Index = () => {
           { postLoading ? <Spinner mL="15px" mR="15px"/> : <Posts payloads={posts} /> }
 
         </FeedContainer>
-        <SuggestionContainer className="col-md-4">
-          <h3>Suggestions</h3>
-          <People>
-            <span>Professor</span>
-          </People>
-          <People>
-            <span>Berlin</span>
-          </People>
-        </SuggestionContainer>
+        <CardBox className="col-md-3" padding="0px" mLeft="5px" hideonMobile="none">
+          <List>
+            <ListHeader>Characters</ListHeader>
+            <ListItems>
+              <ListItem>Professor</ListItem>
+              <ListItem>Berlin</ListItem>
+            </ListItems>
+          </List>
+        </CardBox>
       </Row>
     </Layout>
   )
 }
+
+const List = styled.div`
+  margin-top: ${(props) => props.marginTop};
+`
+
+const ListHeader = styled.p`
+  background:#607D8B;
+  color:white;
+  padding:10px;
+  font-size:19px;
+`
+
+const ListItem = styled.p`
+  line-height:1.9em;
+  padding-left:5px;
+  padding-bottom:5px;
+  :hover{
+    color:red;
+  }
+`
+const ListItems = styled.div`
+  padding:15px;
+`;
 
 const FeedContainer = styled.div`
   margin-bottom:15px;
@@ -131,6 +175,10 @@ const Flexbox = styled.div`
   margin-right: ${(props) => props.marginRight};
   align-items: ${(props) => props.algItems};
   background: ${(props) => props.bg};
+
+  @media (max-width: 920px) {
+    display: ${(props) => props.hideonMobile};
+  }
 `
 
 const FeedActionBtn = styled.div`
@@ -145,6 +193,12 @@ const FeedActionBtn = styled.div`
 
 const Row = styled.div`
   margin-top: 10px;
+  display: flex;
+  justify-content: center;
+
+  @media (max-width: 920px) {
+    display: block;
+  }
 `
 
 const FeedButton = styled.button`
@@ -192,6 +246,29 @@ const SelectedAttachment = styled.span`
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+  }
+`
+
+const CardBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background: white;
+  padding: ${(props) => props.padding == '' ? '20px' : props.padding};
+
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  border-radius: 2px;
+  margin-bottom: 10px;
+  margin-top: ${(props) => props.mTop};
+  margin-left: ${(props) => props.mLeft};
+  margin-right: ${(props) => props.mRight};
+  
+  height:max-content;
+
+  @media (max-width: 920px) {
+    max-width: unset;
+    display: ${(props) => props.hideonMobile};
   }
 `
 

@@ -7,7 +7,7 @@ const Layout = props => {
   return (
     <Root>
       <Navbar isMobNavOpen={isMobNavOpen} setMobNavOpen={setMobNavOpen}/>
-      <Content className="container" isMobNavOpen={isMobNavOpen}>
+      <Content className="container-fluid" isMobNavOpen={isMobNavOpen}>
         {props.children}
       </Content>
     </Root>
