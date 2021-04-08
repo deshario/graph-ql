@@ -31,3 +31,12 @@ export const postMutation = gql`
   }
   ${fragmentPost}
 `;
+
+export const postSubscription = gql`
+  subscription newPostPubSub {
+    newPostPubSub {
+      ...Post
+    }
+  }
+  ${fragmentPost}
+`;

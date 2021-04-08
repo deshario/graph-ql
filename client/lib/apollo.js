@@ -1,5 +1,8 @@
-import { ApolloClient, InMemoryCache } from '@apollo/client';
+import { ApolloClient, InMemoryCache, split, ApolloLink } from '@apollo/client';
 import { createUploadLink } from 'apollo-upload-client'
+import { getMainDefinition } from '@apollo/client/utilities';
+import { WebSocketLink } from '@apollo/client/link/ws';
+import { onError } from "@apollo/client/link/error";
 
 const defaultOptions = {
 	watchQuery: {
@@ -12,19 +15,57 @@ const defaultOptions = {
 	},
 };
 
+const isClient = process.browser;
+
 const cache = new InMemoryCache({
 	resultCaching: true,
 });
 
-const link = createUploadLink({
-  uri: '/playground',
+const getAbsoluteUrl = () => {
+  return {
+    http: "http://localhost:9000/playground",
+    socket: "ws://localhost:9000/graphql"
+  }
+}
+
+const httpLink = createUploadLink({
+  uri: getAbsoluteUrl().http,
   credentials: 'same-origin'
-})
+});
+
+const wsLink = isClient ? new WebSocketLink({
+	uri: getAbsoluteUrl().socket,
+	options: {
+		reconnect: true,
+	},
+}) : null;
+
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors)
+    graphQLErrors.map(({ message, locations, path }) =>
+      console.log(
+        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+      )
+    );
+  if (networkError) console.log(`[Network error]: ${networkError}`);
+});
+
+const splitLink = isClient ? split(
+  ({ query }) => {
+    const definition = getMainDefinition(query);
+    return (
+      definition.kind === 'OperationDefinition' &&
+      definition.operation === 'subscription'
+    );
+  },
+  wsLink,
+  httpLink,
+) : httpLink;
 
 const client = new ApolloClient({
 	connectToDevTools: false,
-	ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
-	link,
+	ssrMode: !isClient, // Prevents Apollo Client from refetching queries unnecessarily
+	link: ApolloLink.from([errorLink, splitLink]),
 	cache,
 	//defaultOptions
 });

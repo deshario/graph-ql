@@ -2,8 +2,8 @@ import Layout from "./components/Layout"
 import styled from "styled-components"
 import React, { useEffect, useState } from "react"
 import { FaCamera, FaFileAlt, FaMicrophone } from "react-icons/fa"
-import { useQuery, useMutation } from "@apollo/client"
-import { postsQuery, postMutation } from "../documents"
+import { useQuery, useMutation, useSubscription } from "@apollo/client"
+import { postsQuery, postMutation, postSubscription } from "../documents"
 import Posts from "./components/Posts"
 import Spinner from "./components/Spinner"
 
@@ -15,8 +15,13 @@ const Index = () => {
 
   const { data, loading:postLoading } = useQuery(postsQuery);
   const [createPost, { loading:mutationLoading }] = useMutation(postMutation);
+  const { data:subscribedData } = useSubscription(postSubscription);
 
   const hiddenFileInput= React.useRef(null);
+
+  if(subscribedData){
+    console.log('subscribedData:',subscribedData)
+  }
 
   useEffect(() => {
     if(!postLoading && data){
@@ -270,26 +275,6 @@ const CardBox = styled.div`
     max-width: unset;
     display: ${(props) => props.hideonMobile};
   }
-`
-
-const SuggestionContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  background: white;
-  padding: 20px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-  border-radius: 2px;
-  margin-bottom: 10px;
-
-  @media (max-width: 920px) {
-    max-width: unset;
-  }
-`
-
-const People = styled.div`
-  margin-top: 20px;
 `
 
 export default Index

@@ -1,6 +1,12 @@
 import { postController } from './db/post.controller'
+import { pubsub } from "../../config/pubsub";
 
 const postResolver = {
+	Subscription: {
+		newPostPubSub: {
+			subscribe: () => pubsub.asyncIterator(['POST_ADDED'])
+		}
+	},
 	Query: {
 		getPosts(parent, args, context) {
 			return postController.getPosts(args,context)
@@ -11,7 +17,9 @@ const postResolver = {
 	},
 	Mutation: {
 		createPost(parent, args, context) {
-      return postController.createPost(args, context)
+      const createdPost = postController.createPost(args, context)
+			pubsub.publish('POST_ADDED', { newPostPubSub: createdPost });
+			return createdPost;
 		},
 		updatePost(parent, args, context){
 			return postController.updatePost(args,context);
