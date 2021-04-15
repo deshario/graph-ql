@@ -63,7 +63,7 @@ const splitLink = isClient ? split(
 ) : httpLink;
 
 const client = new ApolloClient({
-	connectToDevTools: false,
+	connectToDevTools: isClient,
 	ssrMode: !isClient, // Prevents Apollo Client from refetching queries unnecessarily
 	link: ApolloLink.from([errorLink, splitLink]),
 	cache,
