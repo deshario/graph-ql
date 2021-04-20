@@ -134,12 +134,16 @@ const ListHeader = styled.p`
   color:white;
   padding:10px;
   font-size:19px;
+  margin-block-start: 0;
+  margin-block-end: 0;
 `
 
 const ListItem = styled.p`
   line-height:1.9em;
   padding-left:5px;
   padding-bottom:5px;
+  margin-block-start: 0;
+  margin-block-end: 0;
   :hover{
     color:red;
   }
