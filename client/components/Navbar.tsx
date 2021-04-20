@@ -1,15 +1,13 @@
 import styled from "styled-components";
-import { useState } from 'react'
 import { FaBars } from 'react-icons/fa';
 import Router, { withRouter } from 'next/router'
+import { NavInterface, LayoutInterface } from '../components/interface'
 
-const Navbar = ({ router, isMobNavOpen, setMobNavOpen }) => {
+const Navbar = ({ router, isMobNavOpen, setMobNavOpen } : NavInterface) => {
 
-  // const [isMobNavOpen, setMobNavOpen] = useState(false);
+  const checkActive = (currentTab:string) => router.pathname == currentTab ? 'active' : '';
 
-  const checkActive = currentTab => router.pathname == currentTab ? 'active' : '';
-
-  const setRoutePage = pageName => Router.push({ pathname: pageName});
+  const setRoutePage = (pageName:string) => Router.push({ pathname: pageName});
 
   return (
     <Nav>
@@ -61,7 +59,7 @@ const NavLogo = styled.div`
   font-weight: 600;
 `
 
-const Menu = styled.ul`
+const Menu = styled.ul<LayoutInterface>`
   display: flex;
   flex-wrap: wrap;
   list-style: none;

@@ -22,7 +22,12 @@ const Spinner = styled.div`
   border-radius: 50%;
 `;
 
-const SpinnerHolder = styled.div`
+interface StyleProps {
+  marginLeft?: string;
+  marginRight?: string;
+} 
+
+const SpinnerHolder = styled.div<StyleProps>`
   display: flex;
   background: white;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
@@ -36,10 +41,10 @@ const SpinnerHolder = styled.div`
   margin: auto;
   width: auto;
   left: ${(props) => props.marginLeft ?  props.marginLeft : "0"};
-  right: ${(props) => props.marginLeft ?  props.marginLeft : "0"};
+  right: ${(props) => props.marginRight ?  props.marginRight : "0"};
 `
 
-const Loader = ({ mL, mR }) => {
+const Loader = ({ mL, mR } : any) => {
   return (
     <SpinnerHolder marginLeft={mL} marginRight={mR}>
       <Spinner></Spinner>

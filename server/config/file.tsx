@@ -1,7 +1,11 @@
 import { createWriteStream } from 'fs';
 import path from 'path';
 
-const uploadFile = async ({ attachment }) => {
+export interface UploadInterface{
+  fileName:string
+}
+
+const uploadFile = async ({ attachment }):Promise<UploadInterface> => {
   const { createReadStream, filename } = await attachment;
   const randomStr = Math.random().toString(20).substr(2, 20)+Math.random().toString(20).substr(2, 20);
   const fileName = `${randomStr}.${filename.split('.').pop()}`;

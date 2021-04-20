@@ -1,9 +1,9 @@
-import App from 'next/app'
+import App, { AppProps, AppContext } from 'next/app'
 import Head from 'next/head'
 import { ApolloProvider } from '@apollo/client';
 import client from '../lib/apollo';
 
-const mApp = ({ Component, pageProps}) => {
+const mApp = ({ Component, pageProps } : AppProps) => {
   return (
     <>
       <Head>
@@ -18,7 +18,7 @@ const mApp = ({ Component, pageProps}) => {
   )
 }
 
-mApp.getInitialProps = async (appContext) => {
+mApp.getInitialProps = async (appContext:AppContext) => {
   const appProps = await App.getInitialProps(appContext);
   return { ...appProps }
 }

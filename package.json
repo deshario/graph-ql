@@ -4,17 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "NODE_ENV=development nodemon app.js --exec babel-node --presets @babel/preset-env",
-    "dev:window": "nodemon app.js --exec babel-node --presets @babel/preset-env --watch app.js",
+    "dev": "ts-node --project tsconfig.server.json app.tsx",
     "build": "next build client",
-    "start": "next start",
-    "prod": "NODE_ENV=production babel-node app.js --presets @babel/preset-env"
+    "start": "next start client",
+    "prod": "NODE_ENV=production ts-node --project tsconfig.server.json app.tsx"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@apollo/client": "^3.3.13",
+    "@types/styled-components": "^5.1.9",
     "apollo-server-express": "^2.21.1",
     "apollo-upload-client": "^14.1.3",
     "dotenv": "^8.2.0",
@@ -36,6 +36,9 @@
   "devDependencies": {
     "@babel/core": "^7.13.10",
     "@babel/node": "^7.13.10",
-    "@babel/preset-env": "^7.13.10"
+    "@babel/plugin-syntax-jsx": "^7.12.13",
+    "@babel/preset-env": "^7.13.10",
+    "@types/react": "^17.0.3",
+    "typescript": "^4.2.4"
   }
 }

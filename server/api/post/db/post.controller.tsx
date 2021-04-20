@@ -5,6 +5,12 @@ const calculateSkip = (page, size) => (page - 1) * size;
 
 const calculateTotalPages = (count, size) => Math.ceil(count / size);
 
+interface PostArgs {
+  content?: string
+  attachment?: string
+  creator?: string
+}
+
 const postController = {
   getPosts: async(args, context = {}) => {
     return await Post.find(args.where).sort(args.sort || {createdAt: -1}).skip(args.skip || 0).limit(args.limit || false).populate("creator");
@@ -27,7 +33,7 @@ const postController = {
       posts
     }
   },
-  createPost: async (args = {} , context = {}) => {
+  createPost: async (args:PostArgs, context={}) => {
     const { content, attachment, creator } = args
     const newPost = new Post({ content, creator });
     if(attachment){

@@ -1,8 +1,9 @@
 import Navbar from './Navbar';
 import styled from "styled-components";
 import { useState } from "react"
+import { LayoutInterface } from '../components/interface';
 
-const Layout = props => {
+const Layout = (props:LayoutInterface) => {
   const [isMobNavOpen, setMobNavOpen] = useState(false);
   return (
     <Root>
@@ -19,7 +20,7 @@ const Root = styled.div`
   min-height:100vh;
   height:100%;
 `
-const Content = styled.div`
+const Content = styled.div<LayoutInterface>`
   z-index: -1;
   
   @media (max-width: 920px){

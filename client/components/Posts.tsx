@@ -3,14 +3,16 @@ import styled from "styled-components";
 import Image from 'next/image';
 import { FaTrashAlt } from 'react-icons/fa';
 import moment from 'moment';
+import { PostsInterface } from "../components/interface";
+import { Flexbox } from "./styled-components";
 
-const Posts = ({ payloads }) => {
+const Posts = ({ payloads }: PostsInterface) => {
   const renders = React.useRef(0);
   return (
     <>
       {/* <h1>Renders : {renders.current++}</h1> */}
       {
-        payloads.map((post, postKey) => {
+        payloads.map((post:any, postKey:any) => {
           return (
             <Card key={postKey}>
               <CardContent>
@@ -48,15 +50,31 @@ const Posts = ({ payloads }) => {
 
 export default React.memo(Posts)
 
+interface ImgHolderInterface {
+  hide?:string | ''
+}
 
-const Flexbox = styled.div`
-  display:flex;
-  flex-direction: ${props => props.direction == 'column' ? 'column' : 'row'};
-  justify-content: ${props => props.justifyContent};
-  margin-top: ${props => props.marginTop};
-  margin-left: ${props => props.marginLeft};
-  align-items: ${props => props.algItems};
+interface CardImageInterface {
+  layout?:string | ''
+}
+
+export const ImgHolder = styled.div`
+  ${(props: ImgHolderInterface) => {
+    return {
+      display: props.hide || "",
+      "margin-left" : "-10px",
+      "margin-right" : "-10px",
+      "margin-bottom": "-10px"
+    }
+  }}
 `
+
+export const CardImage = styled(Image)`
+  ${(props: CardImageInterface) => {
+    return {}
+  }}
+`;
+
 
 const Card = styled.div`
   display:flex;
@@ -75,14 +93,6 @@ const Card = styled.div`
   }
 `;
 
-const CardImage = styled(Image)``;
-
-const ImgHolder = styled.div`
-  display: ${(props) => props.hide};
-  margin-left:-10px;
-  margin-right:-10px;
-  margin-bottom:-10px;
-`;
 
 const AuthorRoot = styled.div`
   display:flex;

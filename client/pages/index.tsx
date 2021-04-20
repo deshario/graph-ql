@@ -1,15 +1,17 @@
-import Layout from "./components/Layout"
+import Layout from "../components/Layout"
 import styled from "styled-components"
 import React, { useEffect, useState } from "react"
 import { FaCamera, FaFileAlt, FaMicrophone } from "react-icons/fa"
 import { useQuery, useMutation, useSubscription } from "@apollo/client"
 import { postsQuery, postMutation, postSubscription } from "../documents"
-import Posts from "./components/Posts"
-import Spinner from "./components/Spinner"
+import Posts from "../components/Posts"
+import Spinner from "../components/Spinner"
+import { AttachmentInterface, FlexBoxInterface, ListInterface, CardBoxInterface } from "../components/interface"
 
 const Index = () => {
 
-  const defaultPost = { content: '', attachment: null }
+  type postType = { content:string, attachment:any }
+  const defaultPost:postType = {content:'', attachment:null}
   const [newPost, setNewPost] = useState(defaultPost);
   const [ posts, setPosts ] = useState([]);
 
@@ -17,7 +19,7 @@ const Index = () => {
   const [createPost, { loading:mutationLoading }] = useMutation(postMutation);
   const { data:subscribedData } = useSubscription(postSubscription);
 
-  const hiddenFileInput= React.useRef(null);
+  const hiddenFileInput = React.useRef<HTMLInputElement>(null);
 
   if(subscribedData){
     console.log('subscribedData:',subscribedData)
@@ -29,17 +31,24 @@ const Index = () => {
     }
   }, [postLoading, data]);
 
-  const onContentChange = (event) => setNewPost({ ...newPost, content:event.target.value });
+  const onContentChange = (event:any) => setNewPost({ ...newPost, content:event.target.value });
 
-  const handleChange = event => {
-    const fileUploaded = event.target.files[0];
-    setNewPost({
-      ...newPost,
-      attachment: fileUploaded
-    });
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const input = event.target as HTMLInputElement;
+    if(input.files != null){
+      const selectedFile = input.files[0];
+      setNewPost({
+        ...newPost,
+        attachment: selectedFile
+      });
+    }
   };
 
-  const chooseFile = () => hiddenFileInput.current.click();
+  const chooseFile = () => {
+    if(hiddenFileInput.current != null){
+      hiddenFileInput.current.click();
+    }
+  }
 
   const createPoster = () => {
     const authorId = "605703b1d1143818eda6fd9f"
@@ -54,7 +63,7 @@ const Index = () => {
           const existingPosts = cache.readQuery({ query: postsQuery });
           cache.writeQuery({ query: postsQuery, data: { getPosts: allData } });
         */
-        const allData = [createPost, ...posts];
+        const allData:any = [createPost, ...posts];
         setPosts(allData);
         setNewPost(defaultPost);
       }
@@ -64,7 +73,7 @@ const Index = () => {
   return (
     <Layout>
       <Row className="row">
-        <Flexbox className="col-md-3" direction="column" marginLeft="0px" marginRight="-10px" mLeft="10px" padding="0px" hideonMobile="none">
+        <Flexbox className="col-md-3" direction="column" marginRight="5px" padding="0px" hideonMobile="none">
           <CardBox>
             <List>
               <ListHeader>Shortcuts</ListHeader>
@@ -87,7 +96,7 @@ const Index = () => {
         </Flexbox>
         <FeedContainer className="col-md-5">
           <FeedCreator>
-            <TextArea rows="4" placeholder="What's on your mind?" onChange={onContentChange} value={newPost.content}></TextArea>
+            <TextArea rows={4} placeholder="What's on your mind?" onChange={onContentChange} value={newPost.content}></TextArea>
             <Flexbox justifyContent="space-between" algItems="flex-start" bg="#607D8B"  marginLeft="-10px" marginRight="-10px">
               <Flexbox marginLeft="10px" marginRight="10px" marginTop="5px">
                 <FeedActionBtn>
@@ -100,7 +109,9 @@ const Index = () => {
                 <FeedActionBtn>
                   <FaMicrophone />
                 </FeedActionBtn>
-                <SelectedAttachment hide={newPost.attachment == null}>{newPost.attachment && newPost.attachment.name}</SelectedAttachment>
+                <SelectedAttachment hide={newPost.attachment == null}>
+                  {newPost.attachment && newPost.attachment.name}
+                </SelectedAttachment>
               </Flexbox>
               <FeedButton onClick={() => createPoster()} disabled={mutationLoading}>POST</FeedButton>
             </Flexbox>
@@ -125,8 +136,24 @@ const Index = () => {
   )
 }
 
-const List = styled.div`
-  margin-top: ${(props) => props.marginTop};
+const Flexbox = styled.div<FlexBoxInterface>`
+  display: ${props => props.display || "flex"};
+  flex-direction: ${props => props.direction || "row"};
+  justify-content: ${props => props.justifyContent};
+  margin-top: ${props => props.marginTop};
+  margin-left: ${props => props.marginLeft};
+  margin-right: ${props => props.marginRight};
+  align-items: ${props => props.algItems};
+  background: ${props => props.bg};
+  padding: ${props => props.padding};
+
+  @media (max-width: 920px) {
+    display: ${props => props.hideonMobile};
+  }
+`
+
+const List = styled.div<ListInterface>`
+  margin-top: ${props => props.marginTop};
 `
 
 const ListHeader = styled.p`
@@ -134,12 +161,16 @@ const ListHeader = styled.p`
   color:white;
   padding:10px;
   font-size:19px;
+  margin-block-start: 0;
+  margin-block-end: 0;
 `
 
 const ListItem = styled.p`
   line-height:1.9em;
   padding-left:5px;
   padding-bottom:5px;
+  margin-block-start: 0;
+  margin-block-end: 0;
   :hover{
     color:red;
   }
@@ -168,21 +199,6 @@ const TextArea = styled.textarea`
   :focus {
     border: none;
     outline: 0;
-  }
-`
-
-const Flexbox = styled.div`
-  display: flex;
-  flex-direction: ${(props) => props.direction == "column" ? "column" : "row"};
-  justify-content: ${(props) => props.justifyContent};
-  margin-top: ${(props) => props.marginTop};
-  margin-left: ${(props) => props.marginLeft};
-  margin-right: ${(props) => props.marginRight};
-  align-items: ${(props) => props.algItems};
-  background: ${(props) => props.bg};
-
-  @media (max-width: 920px) {
-    display: ${(props) => props.hideonMobile};
   }
 `
 
@@ -226,11 +242,10 @@ const FeedButton = styled.button`
   }
 `
 
-const SelectedAttachment = styled.span`
+const SelectedAttachment = styled.span<AttachmentInterface>`
   background:white;
   color:#455A64;
-  display: ${(props) => props.hide ? 'none' : 'inline-block'};
-
+  display: ${props => props.hide ? 'none' : 'inline-block'};
   align-items:center;
   padding: 4px 10px;
   border-radius:5px;
@@ -254,7 +269,7 @@ const SelectedAttachment = styled.span`
   }
 `
 
-const CardBox = styled.div`
+const CardBox = styled.div<CardBoxInterface>`
   display: flex;
   flex-direction: column;
   position: relative;

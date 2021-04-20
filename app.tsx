@@ -31,8 +31,7 @@ const handle = nextApp.getRequestHandler();
   const httpServer = createServer(app);
   apolloApp.installSubscriptionHandlers(httpServer);
 
-  httpServer.listen(PORT, (err) => {
-    if (err) throw err
+  httpServer.listen(PORT, ():void => {
     console.log(`> 🚀 Playground ready at ${ORIGIN}${apolloApp.graphqlPath}`)
     console.log(`> 🚀 Websocket ready at ${ORIGIN}${apolloApp.subscriptionsPath}`);
   });
