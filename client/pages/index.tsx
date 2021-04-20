@@ -13,7 +13,7 @@ const Index = () => {
   type postType = { content:string, attachment:any }
   const defaultPost:postType = {content:'', attachment:null}
   const [newPost, setNewPost] = useState(defaultPost);
-  const [ posts, setPosts ] = useState([]);
+  const [posts, setPosts] = useState<any[]>([]);
 
   const { data, loading:postLoading } = useQuery(postsQuery);
   const [createPost, { loading:mutationLoading }] = useMutation(postMutation);
@@ -21,15 +21,16 @@ const Index = () => {
 
   const hiddenFileInput = React.useRef<HTMLInputElement>(null);
 
-  if(subscribedData){
-    console.log('subscribedData:',subscribedData)
-  }
-
   useEffect(() => {
     if(!postLoading && data){
       setPosts(data.getPosts);
     }
-  }, [postLoading, data]);
+    if(subscribedData){
+      const { newPostPubSub } = subscribedData;
+      const allData = [newPostPubSub, ...posts];
+      setPosts(allData);
+    }
+  }, [postLoading, data, subscribedData]);
 
   const onContentChange = (event:any) => setNewPost({ ...newPost, content:event.target.value });
 
@@ -165,6 +166,10 @@ const ListHeader = styled.p`
   margin-block-end: 0;
 `
 
+const ListItems = styled.div`
+  padding:15px;
+`;
+
 const ListItem = styled.p`
   line-height:1.9em;
   padding-left:5px;
@@ -175,9 +180,6 @@ const ListItem = styled.p`
     color:red;
   }
 `
-const ListItems = styled.div`
-  padding:15px;
-`;
 
 const FeedContainer = styled.div`
   margin-bottom:15px;
