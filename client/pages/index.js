@@ -8,26 +8,26 @@ import Posts from "../components/Posts"
 import Spinner from "../components/Spinner"
 
 const Index = () => {
-
   const defaultPost = { content: '', attachment: null }
   const [newPost, setNewPost] = useState(defaultPost);
-  const [ posts, setPosts ] = useState([]);
+  const [posts, setPosts] = useState([]);
 
   const { data, loading:postLoading } = useQuery(postsQuery);
   const [createPost, { loading:mutationLoading }] = useMutation(postMutation);
   const { data:subscribedData } = useSubscription(postSubscription);
 
-  const hiddenFileInput= React.useRef(null);
-
-  if(subscribedData){
-    console.log('subscribedData:',subscribedData)
-  }
+  const hiddenFileInput = React.useRef(null);
 
   useEffect(() => {
     if(!postLoading && data){
       setPosts(data.getPosts);
     }
-  }, [postLoading, data]);
+    if(subscribedData){
+      const { newPostPubSub } = subscribedData;
+      const allData = [newPostPubSub, ...posts];
+      setPosts(allData);
+    }
+  }, [postLoading, data, subscribedData]);
 
   const onContentChange = (event) => setNewPost({ ...newPost, content:event.target.value });
 
