@@ -1,11 +1,11 @@
-import Layout from "./components/Layout"
+import Layout from "../components/Layout"
 import styled from "styled-components"
 import React, { useEffect, useState } from "react"
 import { FaCamera, FaFileAlt, FaMicrophone } from "react-icons/fa"
 import { useQuery, useMutation, useSubscription } from "@apollo/client"
 import { postsQuery, postMutation, postSubscription } from "../documents"
-import Posts from "./components/Posts"
-import Spinner from "./components/Spinner"
+import Posts from "../components/Posts"
+import Spinner from "../components/Spinner"
 
 const Index = () => {
 
