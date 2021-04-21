@@ -40,4 +40,5 @@ export interface CardBoxInterface{
   mLeft?: string
   mRight?: string
   hideonMobile?: string
+  enableBorderRight?: boolean
 };

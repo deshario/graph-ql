@@ -20,7 +20,7 @@ const Navbar = ({ router, isMobNavOpen, setMobNavOpen } : NavInterface) => {
           <MenuLink className={checkActive('/')} onClick={() => setRoutePage('/')}>Posts</MenuLink>
         </MenuItem>
         <MenuItem>
-          <MenuLink className={checkActive('/about')} onClick={() => setRoutePage('/about')}>About</MenuLink>
+          <MenuLink className={checkActive('/chat')} onClick={() => setRoutePage('/chat')}>Chat</MenuLink>
         </MenuItem>
         <MenuItem>
           <MenuLink className={checkActive('/contact')} onClick={() => setRoutePage('/contact')}>Contact</MenuLink>

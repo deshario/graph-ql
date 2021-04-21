@@ -6,14 +6,14 @@ import { useQuery, useMutation, useSubscription } from "@apollo/client"
 import { postsQuery, postMutation, postSubscription } from "../documents"
 import Posts from "../components/Posts"
 import Spinner from "../components/Spinner"
-import { AttachmentInterface, FlexBoxInterface, ListInterface, CardBoxInterface } from "../components/interface"
+import { AttachmentInterface, FlexBoxInterface, ListInterface, CardBoxInterface, PostsInterface } from "../components/interface"
+import { useRecoilState, useResetRecoilState } from 'recoil';
+import newDefaultPost, { PostType } from '../recoil/myAtom';
 
 const Index = () => {
-
-  type postType = { content:string, attachment:any }
-  const defaultPost:postType = {content:'', attachment:null}
-  const [newPost, setNewPost] = useState(defaultPost);
-  const [posts, setPosts] = useState<any[]>([]);
+  const [newPost, setNewPost] = useRecoilState<PostType|any>(newDefaultPost);
+  const resetNewDefaultPost = useResetRecoilState(newDefaultPost);
+  const [posts, setPosts] = useState<PostsInterface[]>([]);
 
   const { data, loading:postLoading } = useQuery(postsQuery);
   const [createPost, { loading:mutationLoading }] = useMutation(postMutation);
@@ -66,7 +66,7 @@ const Index = () => {
         */
         const allData:any = [createPost, ...posts];
         setPosts(allData);
-        setNewPost(defaultPost);
+        resetNewDefaultPost();
       }
     })
   }
