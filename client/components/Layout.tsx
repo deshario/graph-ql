@@ -21,10 +21,16 @@ const Root = styled.div`
   height:100%;
 `
 const Content = styled.div<LayoutInterface>`
-  z-index: -1;
+  z-index: ${props => props.isMobNavOpen ? '-1' : ''};
   
   @media (max-width: 920px){
-    position: ${props => props.isMobNavOpen ? 'absolute' : ''}
+    position: ${props => props.isMobNavOpen ? 'absolute' : ''};
+    -webkit-filter: ${props => props.isMobNavOpen ? 'blur(15px)' : ''};
+    -moz-filter: ${props => props.isMobNavOpen ? 'blur(15px)' : ''};
+    -o-filter: ${props => props.isMobNavOpen ? 'blur(15px)' : ''};
+    -ms-filter: ${props => props.isMobNavOpen ? 'blur(15px)' : ''};
+    filter: ${props => props.isMobNavOpen ? 'blur(15px)' : ''};
+    background-color: ${props => props.isMobNavOpen ? 'rgb(238 240 243)' : ''};
   }
 `
 export default Layout

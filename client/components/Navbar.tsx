@@ -73,7 +73,7 @@ const Menu = styled.ul<LayoutInterface>`
     width: 100%;
     text-align: center;
     display: block;
-    transition: all 0.3s ease;
+    transition: all 0.1s ease;
   }
 `;
 
