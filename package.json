@@ -14,6 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "@apollo/client": "^3.3.13",
+    "@types/apollo-upload-client": "^14.1.0",
     "@types/styled-components": "^5.1.9",
     "apollo-server-express": "^2.21.1",
     "apollo-upload-client": "^14.1.3",

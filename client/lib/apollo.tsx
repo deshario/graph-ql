@@ -15,16 +15,23 @@ const defaultOptions = {
 	},
 };
 
-const isClient = process.browser;
+const isClient = process?.browser;
 
 const cache = new InMemoryCache({
 	resultCaching: true,
 });
 
 const getAbsoluteUrl = () => {
-  return {
-    http: "http://localhost:9000/playground",
-    socket: "ws://localhost:9000/graphql"
+  if(process.env.NODE_ENV !== "production"){
+    return {
+      http: "http://localhost:9000/playground",
+      socket: "ws://localhost:9000/graphql"
+    }
+  }else{
+    return {
+      http: "http://localhost:9000/playground",
+      socket: "wss://express-gql.com/graphql"
+    }
   }
 }
 
@@ -32,13 +39,6 @@ const httpLink = createUploadLink({
   uri: getAbsoluteUrl().http,
   credentials: 'same-origin'
 });
-
-const wsLink = isClient ? new WebSocketLink({
-	uri: getAbsoluteUrl().socket,
-	options: {
-		reconnect: true,
-	},
-}) : null;
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors)
@@ -58,7 +58,12 @@ const splitLink = isClient ? split(
       definition.operation === 'subscription'
     );
   },
-  wsLink,
+  new WebSocketLink({
+    uri: getAbsoluteUrl().socket,
+    options: {
+      reconnect: true,
+    },
+  }),
   httpLink,
 ) : httpLink;
 

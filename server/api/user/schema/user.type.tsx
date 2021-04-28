@@ -7,6 +7,8 @@ const userType = gql`
 		_id: ObjectID!
 		username: String!
 		email: String!
+		createdAt: Date
+		updatedAt: Date
 	}
 
 `;

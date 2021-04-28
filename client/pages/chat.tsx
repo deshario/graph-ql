@@ -1,58 +1,52 @@
 import Layout from '../components/Layout';
 import styled from "styled-components"
 import { FlexBoxInterface, CardBoxInterface, ListInterface } from "../components/interface"
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useQuery } from "@apollo/client"
+import { ChatsQuery, UsersQuery } from "../documents"
+import moment from "moment"
 
 const Chat = () => {
 
-  const [activeChat, setActiveChat] = useState({ partnerName:'Megatron' }); // Optimus Prime // Megatron
+  const { data:usersData, loading:userLoading } = useQuery(UsersQuery);
+  const { data:chatData, loading:chatLoading } = useQuery(ChatsQuery);
+
   const [typingMsg, setTypingMsg] = useState('');
 
-  const [partners, setPartners] = useState([
-    { name: 'Optimus Prime' },
-    { name: 'Bumble Bee' },
-    { name: 'Megatron' },
-    { name: 'Professor' },
-    { name: 'Berlin' },
-  ])
-
-  const [allChats, setAllChats] = useState([
-    {
-      partner: 'Optimus Prime',
-      payloads: [
-        { msg: 'Hey! Do u need something', sender: 'Deshario' },
-        { msg: 'No Thanks', sender: 'Megatron' },
-        { msg: 'Howz going', sender: 'Deshario' }
-      ]
-    },
-    {
-      partner: 'Megatron',
-      payloads: [
-        { msg: 'hello', sender: 'Megatron' },
-        { msg: 'Whats up buddy', sender: 'Deshario' },
-        { msg: 'All great ... what about you', sender: 'Megatron' }
-      ]
-    }
-  ]);
+  const [partners, setPartners] = useState([]);
+  const [activeChatPartner, setActiveChatPartner] = useState('');
+  const [allChats, setAllChats] = useState([]);
 
   const GetSpecificChat = () => {
-    const chats = allChats.find((e:any) => e.partner == activeChat.partnerName);
-    if(chats != undefined){
+
+    const chatIndex :any = allChats.findIndex((e:any) => e.participants.every(
+        (p:any) => p.username === "Deshario" || p.username === activeChatPartner
+      )
+    );
+
+    let specificChat:any = [];
+    if(chatIndex != -1){
+      specificChat = allChats[chatIndex];
+    }
+    
+    if(chatIndex != -1){
       return (
         <>
         {
-          chats.payloads.map((chat:any, i:any) => {
-            if(chat.sender != "Deshario"){
+          specificChat.messages.map((chat:any, i:any) => {
+            if(chat.sender.username != "Deshario"){
               return (
                 <PartnerMsg key={i}>
                   <ChatIcon color="rgb(228 230 234)" width="20px" height="20px"/>
-                  <span className="message">{chat.msg}</span>
+                  <span className="message">{chat.message}</span>
+                  <span className="timestamp">{moment(chat.sendAt).format("HH:MM")}</span>
                 </PartnerMsg>
               )
             }else{
               return (
                 <MyMsg key={i}>
-                  <span className="message">{chat.msg}</span>
+                  <span className="timestamp">{moment(chat.sendAt).format("HH:MM")}</span>
+                  <span className="message">{chat.message}</span>
                   <ChatIcon color="#03A9F4" width="20px" height="20px"/>
                 </MyMsg>
               )
@@ -66,17 +60,26 @@ const Chat = () => {
     }
   }
 
+  useEffect(() => {
+    if(!userLoading && usersData){
+      setPartners(usersData.getUsers);
+      // setActiveChatPartner(usersData.getUsers[0].username) // FirstUser
+      setActiveChatPartner(usersData.getUsers[1].username) // FirstUser
+    }
+    if(!chatLoading && chatData){
+      setAllChats(chatData.getChats);
+    }
+  }, [userLoading, usersData, chatLoading, chatData]);
+
   const changeActiveChat = (partnerName:string) => {
-    setActiveChat({
-      partnerName: partnerName
-    })
+    setActiveChatPartner(partnerName);
   }
 
   const onSubmitMsg = (e:any) => {
     if(e.keyCode == 13 && e.shiftKey == false) {
       e.preventDefault();
       const tempChats = JSON.parse(JSON.stringify(allChats));
-      const chatIndex = tempChats.findIndex((e:any) => e.partner == activeChat.partnerName);
+      const chatIndex = tempChats.findIndex((e:any) => e.partner == activeChatPartner);
       if(chatIndex != undefined){
         const chatFound = tempChats[chatIndex];
         const payloads = chatFound.payloads;
@@ -97,15 +100,15 @@ const Chat = () => {
             <List>
               <ChatList>
                 {
-                  partners.map((partner,i) => {
+                  partners.map((partner:any,i) => {
                     return (
                       <ChatItem
                         key={i}
-                        active={activeChat.partnerName === partner.name}
-                        onClick={() => changeActiveChat(partner.name)}>
+                        active={activeChatPartner === partner.username}
+                        onClick={() => changeActiveChat(partner.username)}>
                         <ChatIcon />
                         <ChatOwner>
-                          <span>{partner.name}</span>
+                          <span>{partner.username}</span>
                           <span>3 minutes ago</span>
                         </ChatOwner>
                       </ChatItem>
@@ -120,11 +123,11 @@ const Chat = () => {
           <CardBox>
             <ChatCHeader>
               <ChatIcon color="#5AD539"/>
-              <span className="title">{activeChat.partnerName}</span>
+              <span className="title">{activeChatPartner}</span>
             </ChatCHeader>
             <ChatCContent>
               <ChatMessages>
-                <GetSpecificChat />
+                <GetSpecificChat/>
               </ChatMessages>
               <ChatInputBox>
                 <ChatInput value={typingMsg} onKeyDown={onSubmitMsg} onChange={(e) => setTypingMsg(e.target.value)}/>
@@ -282,7 +285,12 @@ const PartnerMsg = styled.div`
   display:flex;
   align-self: flex-start;
   align-items: flex-end;
-  margin-bottom:5px;
+  margin-top:15px;
+
+  > span.timestamp{
+    color:gray;
+    margin-left:8px;
+  }
 
   > span.message {
     background:rgb(228 230 234);
@@ -292,13 +300,22 @@ const PartnerMsg = styled.div`
     color:black;
     width:max-content;
   }
+
+  @media (max-width: 920px) {
+    margin-bottom:15px;
+  }
 `;
 
 const MyMsg = styled.div`
   display:flex;
   align-self: flex-end;
   align-items: flex-end;
-  margin-bottom:5px;
+  margin-bottom:15px;
+
+  > span.timestamp{
+    color:gray;
+    margin-right:8px;
+  }
 
   > span.message {
     background:#03A9F4;
@@ -307,6 +324,10 @@ const MyMsg = styled.div`
     border-radius:10px;
     color:white;
     width:max-content;
+  }
+
+  @media (max-width: 920px) {
+    margin-top:15px;
   }
 `;
 
